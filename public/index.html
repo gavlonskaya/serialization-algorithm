@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Сериализация и десериализация массива чисел</title>
+  </head>
+  <body>
+    <h1>Сериализация и десериализация массива чисел</h1>
+    <label for="numberArray">Введите массив чисел (через запятую):</label>
+    <input type="text" id="numberArray" />
+    <button onclick="serializeAndDisplay()">Сериализовать</button>
+    <p id="serializedResult"></p>
+    <p id="compressionRatio"></p>
+    <div id="testResults"></div>
+
+    <script>
+      function serializeArray(arr) {
+        return arr.join(",");
+      }
+
+      function serializeAndDisplay() {
+        const inputArray = document
+          .getElementById("numberArray")
+          .value.split(",")
+          .map(Number);
+        const serializedString = serializeArray(inputArray);
+        const compressionRatio =
+          serializedString.length / (inputArray.length * 3);
+
+        document.getElementById("serializedResult").innerText =
+          "Сериализованная строка: " + serializedString;
+        document.getElementById("compressionRatio").innerText =
+          "Коэффициент сжатия: " + compressionRatio;
+
+        // Примеры тестов
+        const testCases = [
+          [1, 2, 3, 4, 5],
+          [45, 72, 103, 200 /* еще 95 чисел */],
+          [10, 20, 30, 40 /* ... еще 496 чисел */],
+          [3, 6, 9, 12 /* еще 996 чисел */],
+          [1, 2, 3, 4, 5 /* ... еще 995 чисел */],
+          [10, 20, 30, 40, 50 /* еще 995 чисел */],
+          [100, 200, 300, 400, 500 /* еще 995 чисел */],
+          [1, 1, 1, 2, 2, 2, 3, 3, 3 /* еще 891 чисел */],
+        ];
+
+        const testResultsDiv = document.getElementById("testResults");
+        testResultsDiv.innerHTML = "";
+
+        testCases.forEach((arr, index) => {
+          const serializedString = serializeArray(arr);
+          const compressionRatio = serializedString.length / (arr.length * 3);
+          const testResult = document.createElement("p");
+          testResult.innerText = `Тест ${
+            index + 1
+          }: Исходный массив: ${arr}, Сериализованная строка: ${serializedString}, Коэффициент сжатия: ${compressionRatio}`;
+          testResultsDiv.appendChild(testResult);
+        });
+      }
+    </script>
+  </body>
+</html>
